@@ -6,12 +6,14 @@ console.log("Logs from your program will appear here!");
 // Uncomment this block to pass the first stage
 const server = net.createServer((connection) => {
     // Handle connection
+    let dict = new Map();
     connection.on('data', (data) => {
         const str = data.toString();
         const pattern = "\r\n";
-        let newString = "";
+        
+         let newString = "";
         let arr = [];
-        let dict = new Map();
+      
 
         for (let i = 0; i < str.length; i++){
             if (!pattern.includes(str[i])) {
@@ -58,12 +60,15 @@ const server = net.createServer((connection) => {
                 const key = arr[++i];
                 const value = dict.get(key.toString());
                 console.log("value, temp",key===temp);
-                // if (value) {
-                //     connection.write(`$${value.length}\r\n${value}\r\n`);
-                // }
-                // else connection.write("$-1\r\n");
+                if (value) {
+                    connection.write(`$${value.length}\r\n${value}\r\n`);
+                }
+                else connection.write("$-1\r\n");
             }
         }
+        
+   
+       
     })
 });
 //
