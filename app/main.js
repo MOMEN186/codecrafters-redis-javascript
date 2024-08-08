@@ -1,96 +1,45 @@
 const net = require("net");
 const readline = require('node:readline');
+const parseInput = require("./parseInput");
+const response= require("./response");
 var argv = require('optimist').argv;
 
 
 
-let port =argv.port ||6379 ;
-let replicaof = argv.replicaof || 0;
-console.log(replicaof);
+
+let port = argv.port||6379, masterPort, host;
+
+console.log("replicaof", argv.replicaof);
+if (argv.replicaof) {
+    masterPort = Number(argv.replicaof.substr(10, argv.replicaof.length - 1));
+    host = argv.replicaof.substr(0, 9);
+    
+    
+    const client = net.createConnection({ host, port:masterPort });
+    client.write(`*1\r\n$4\r\nPING\r\n`);
+}
+console.log({ host, port, masterPort });
+
+
+
 const server = net.createServer((connection) => {
-    // Handle connection
+   
     let dict = new Map();
-  
+    
     connection.on("data", (data) => {
         const str = data.toString();
-        const pattern = "\r\n";
-        const master_replid = "8371b4fb1155b71f4a04d3e1bc3e18c4a990aeeb";
-        let newString = "";
-        let arr = [];
+        
+       
+        const input = parseInput.parseInput(str);
+        const output = response.genResponse(input,argv.replicaof,dict);
+        console.log("input", input);
+        console.log("output", output);
+        connection.write(output); 
+        
 
-        for (let i = 0; i < str.length; i++) {
-            if (!pattern.includes(str[i])) {
-                newString += str[i];
-            } else newString += "";
-        }
 
-        console.log("newString:", newString);
-        let temp = "";
-        for (let i = 0; i < newString.length; i++) {
-            if (
-                newString[i].toLowerCase() !== newString[i].toUpperCase() ||
-                arr[arr.length - 1] === "px"
-            ) {
-                // console.log("in if", newString[i])
-                temp += newString[i];
-            } else {
-                if (temp !== "") arr.push(temp.toLowerCase());
-                temp = "";
-            }
-        }
-        if (temp !== "") arr.push(temp.toLowerCase());
-
-        // console.log(arr);
-
-        for (let i = 0; i < arr.length; i++) {
-            if (arr[i] === "echo") {
-                i++;
-                connection.write(`+${arr[i]}\r\n`);
-            } else if (arr[i] == "ping") {
-                console.log("ping");
-                
-                    
-                 connection.write("+PONG\r\n");
-            } else if (arr[i] === "set") {
-                const key = arr[++i];
-                const value = arr[++i];
-                dict.set(key, value);
-                console.log("has", dict.has(key));
-                if (arr[i + 1] === "px") {
-                    i += 2;
-                    console.log("time :",Number( arr[i]));
-                    setTimeout(() => {
-                        console.log("deleted");;
-                        dict.delete(key);
-                        console.log("dict.has", dict.has(key));
-                    }, 100);
-                   
-                }
-                connection.write("+OK\r\n");
-            } else if (arr[i] === "get") {
-                // console.log("get", arr[i + 1]);
-                // console.log("all array", arr);
-                const key = arr[++i];
-                const value = dict.get(key.toString());
-                console.log("value", value);
-                if (value) {
-                    connection.write(`$${value.length}\r\n${value}\r\n`);
-                } else connection.write("$-1\r\n");
-            }
-            else if (arr[i] === "info") {
-                i++;
-                if (arr[i] === "replication") {
-                    if (replicaof) {
-                        connection.write("$10\r\nrole:slave\r\n");
-                    }
-                    else {
-                        connection.write(`$85\r\nrole:mastermaster_repl_offset:0master_replid:${master_replid}\r\n`);
-                    }
-                }
-            }
-          
-        }
+       
     });
 });
 //
-server.listen(port)
+server.listen(port);
