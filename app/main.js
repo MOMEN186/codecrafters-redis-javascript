@@ -5,7 +5,8 @@ var argv = require('optimist').argv;
 
 
 let port =argv.port ||6379 ;
-
+let replicaof = argv.replicaof || 0;
+console.log(replicaof);
 const server = net.createServer((connection) => {
     // Handle connection
     let dict = new Map();
@@ -76,7 +77,10 @@ const server = net.createServer((connection) => {
             else if (arr[i] === "info") {
                 i++;
                 if (arr[i] === "replication") {
-                    connection.write("$11\r\nrole:master\r\n");
+                    if (replicaof) {
+                        connection.write("$10\r\nrole:slave\r\n")
+                    }
+                   else connection.write("$11\r\nrole:master\r\n");
                 }
             }
           
