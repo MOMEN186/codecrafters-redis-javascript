@@ -1,13 +1,15 @@
 const net = require("net");
+const readline = require('node:readline');
 
-console.log("Logs from your program will appear here!");
+var argv = require('optimist').argv;
+console.log(argv.port);
 
-let port = 6379;
+let port =argv.port ||6379 ;
 
 const server = net.createServer((connection) => {
     // Handle connection
     let dict = new Map();
-
+  
     connection.on("data", (data) => {
         const str = data.toString();
         const pattern = "\r\n";
@@ -78,4 +80,9 @@ const server = net.createServer((connection) => {
     });
 });
 //
-server.listen(port);
+server.listen(port).on('listening', () => {
+    console.log(
+        `listening at: (port = ${
+           server.address().port
+        })`)
+});
