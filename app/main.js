@@ -81,7 +81,7 @@ const server = net.createServer((connection) => {
                         connection.write("$10\r\nrole:slave\r\n")
                     }
                     else {
-                        connection.write(`$85\r\nnrole:mastermaster_repl_offset:0master_replid:${master_replid}\r\n`);
+                        connection.write(`$85\r\nrole:mastermaster_repl_offset:0master_replid:${master_replid}\r\n`);
                         
                     }
                 }
