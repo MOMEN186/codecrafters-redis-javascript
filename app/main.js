@@ -80,7 +80,10 @@ const server = net.createServer((connection) => {
                     if (replicaof) {
                         connection.write("$10\r\nrole:slave\r\n")
                     }
-                   else connection.write(`$11\r\nrole:master\r\n$54master_replid:${master_replid}\r\n$20\r\nmaster_repl_offset:1`);
+                    else {
+                        connection.write(`$85\r\nnrole:mastermaster_repl_offset:0master_replid:${master_replid}\r\n`);
+                        
+                    }
                 }
             }
           
