@@ -1,8 +1,8 @@
 const net = require("net");
 const readline = require('node:readline');
-
 var argv = require('optimist').argv;
-console.log(argv.port);
+
+
 
 let port =argv.port ||6379 ;
 
@@ -39,7 +39,7 @@ const server = net.createServer((connection) => {
         }
         if (temp !== "") arr.push(temp.toLowerCase());
 
-        console.log(arr);
+        // console.log(arr);
 
         for (let i = 0; i < arr.length; i++) {
             if (arr[i] === "echo") {
@@ -64,8 +64,8 @@ const server = net.createServer((connection) => {
                 }
                 connection.write("+OK\r\n");
             } else if (arr[i] === "get") {
-                console.log("get", arr[i + 1]);
-                console.log("all array", arr);
+                // console.log("get", arr[i + 1]);
+                // console.log("all array", arr);
                 const key = arr[++i];
                 const value = dict.get(key.toString());
                 console.log("value", value);
@@ -73,16 +73,15 @@ const server = net.createServer((connection) => {
                     connection.write(`$${value.length}\r\n${value}\r\n`);
                 } else connection.write("$-1\r\n");
             }
-            else if (arr[i] === '--port') {
-                console.log("port:", arr[i]);
+            else if (arr[i] === "info") {
+                i++;
+                if (arr[i] === "replication") {
+                    connection.write("$11\r\nrole:master\r\n");
+                }
             }
+          
         }
     });
 });
 //
-server.listen(port).on('listening', () => {
-    console.log(
-        `listening at: (port = ${
-           server.address().port
-        })`)
-});
+server.listen(port)
