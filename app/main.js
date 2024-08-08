@@ -47,7 +47,10 @@ const server = net.createServer((connection) => {
                 i++;
                 connection.write(`+${arr[i]}\r\n`);
             } else if (arr[i] == "ping") {
-                connection.write("+PONG\r\n");
+                console.log("ping");
+                
+                    
+                 connection.write("+PONG\r\n");
             } else if (arr[i] === "set") {
                 const key = arr[++i];
                 const value = arr[++i];
@@ -78,11 +81,10 @@ const server = net.createServer((connection) => {
                 i++;
                 if (arr[i] === "replication") {
                     if (replicaof) {
-                        connection.write("$10\r\nrole:slave\r\n")
+                        connection.write("$10\r\nrole:slave\r\n");
                     }
                     else {
                         connection.write(`$85\r\nrole:mastermaster_repl_offset:0master_replid:${master_replid}\r\n`);
-                        
                     }
                 }
             }
