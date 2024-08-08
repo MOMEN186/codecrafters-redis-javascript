@@ -1,9 +1,9 @@
 const net = require("net");
 
-// You can use print statements as follows for debugging, they'll be visible when running tests.
 console.log("Logs from your program will appear here!");
 
-// Uncomment this block to pass the first stage
+let port = 6379;
+
 const server = net.createServer((connection) => {
     // Handle connection
     let dict = new Map();
@@ -71,8 +71,11 @@ const server = net.createServer((connection) => {
                     connection.write(`$${value.length}\r\n${value}\r\n`);
                 } else connection.write("$-1\r\n");
             }
+            else if (arr[i] === '--port') {
+                console.log("port:", arr[i]);
+            }
         }
     });
 });
 //
-server.listen(6379);
+server.listen(port);
