@@ -14,7 +14,7 @@ const server = net.createServer((connection) => {
     connection.on("data", (data) => {
         const str = data.toString();
         const pattern = "\r\n";
-
+        const master_replid = "8371b4fb1155b71f4a04d3e1bc3e18c4a990aeeb";
         let newString = "";
         let arr = [];
 
@@ -80,7 +80,7 @@ const server = net.createServer((connection) => {
                     if (replicaof) {
                         connection.write("$10\r\nrole:slave\r\n")
                     }
-                   else connection.write("$11\r\nrole:master\r\n");
+                   else connection.write(`$11\r\nrole:master\r\n$54master_replid:${master_replid}\r\n$20\r\nmaster_repl_offset:1`);
                 }
             }
           
