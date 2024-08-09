@@ -17,7 +17,6 @@ const parseInput = (str) => {
             newString[i].toLowerCase() !== newString[i].toUpperCase() ||
             arr[arr.length - 1] === "px"
         ) {
-            // console.log("in if", newString[i])
             temp += newString[i];
         } else {
             if (temp !== "") arr.push(temp.toLowerCase());
