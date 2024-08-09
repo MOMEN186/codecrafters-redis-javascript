@@ -29,6 +29,10 @@ const genResponse = (arr, isSlave, dict) => {
         }
     }
 
+    function psync() {
+        
+    }
+
     function get(key) {
         const value = dict.get(key.toString());
 
@@ -39,26 +43,25 @@ const genResponse = (arr, isSlave, dict) => {
     function replconf() {
        return "+OK\r\n";
     }
-
+    console.log(arr);
     for (let i = 0; i < arr.length; i++) {
 
 
         switch (arr[i]) {
             case "ping":
-              return   ping();
-                break;
+              return  ping();
             case "echo":
                 i++;
               return  echo(arr[i]);
-                break;
+                
             case "set":
                 const key = arr[i + 1], value = arr[i + 2], px = arr[i + 3];
                 i += 3;
                return set(key, value, px);
-                break;
+                
             case "get":
                return get(arr[++i]);
-                break;
+                
             case "info":
                 i++;
                 if (arr[i] === "replication") {
@@ -68,7 +71,11 @@ const genResponse = (arr, isSlave, dict) => {
                 break;
             case "replconf":
                return replconf();
-                break;
+            case "psync":
+                i++;
+                console.log("in psync",arr);
+            
+            
         }
 
 

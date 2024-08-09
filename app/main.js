@@ -15,7 +15,7 @@ if (argv.replicaof) {
     
     const client = net.createConnection({ host, port: masterPort });
     
-    const commands = ["*1\r\n$4\r\nPING\r\n", `*3\r\n$8\r\nREPLCONF\r\n$14\r\nlistening-port\r\n$4\r\n${port}\r\n`, "*3\r\n$8\r\nREPLCONF\r\n$4\r\ncapa\r\n$6\r\npsync2\r\n"];
+    const commands = ["*1\r\n$4\r\nPING\r\n", `*3\r\n$8\r\nREPLCONF\r\n$14\r\nlistening-port\r\n$4\r\n${port}\r\n`, "*3\r\n$8\r\nREPLCONF\r\n$4\r\ncapa\r\n$6\r\npsync2\r\n","*3\r\n$5\r\nPSYNC\r\n$1\r\n?\r\n$2\r\n-1\r\n"];
     let idx = 0;
     client.write(commands[idx++]);
     
@@ -23,7 +23,7 @@ if (argv.replicaof) {
         const str = data.toString();
         const parsedString = parseInput.parseInput(str);
         console.log({"":parsedString,"parsedString===ppong":parsedString==="pong"});
-        if ((parsedString[0] === "pong" ||parsedString[0]==="ok")&& idx<3) {
+        if ((parsedString[0] === "pong" ||parsedString[0]==="ok")&& idx<commands.length) {
             console.log({idx});
             client.write(commands[idx++]);
         }
