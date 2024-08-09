@@ -19,6 +19,13 @@ const genResponse = (arr, isSlave, dict) => {
         }
         return "+OK\r\n";
     }
+    function get(key) {
+        const value = dict.get(key.toString());
+
+        if (value) {
+            return `$${value.length}\r\n${value}\r\n`;
+        } else return "$-1\r\n";
+    }
 
     function info() {
         if (isSlave) { 
@@ -29,17 +36,13 @@ const genResponse = (arr, isSlave, dict) => {
         }
     }
 
-    function psync() {
-        
+    function psync(id,offset) {
+        if (id === '?') {
+            return `+FULLRESYNC ${master_replid} 0\r\n`
+        }
     }
 
-    function get(key) {
-        const value = dict.get(key.toString());
-
-        if (value) {
-            return `$${value.length}\r\n${value}\r\n`;
-        } else return "$-1\r\n";
-    }
+  
     function replconf() {
        return "+OK\r\n";
     }
@@ -72,8 +75,10 @@ const genResponse = (arr, isSlave, dict) => {
             case "replconf":
                return replconf();
             case "psync":
-                i++;
-                console.log("in psync",arr);
+                const id = arr[++i], offset = arr[++i];
+                console.log("in psync")
+                return psync(id, offset);
+
             
             
         }

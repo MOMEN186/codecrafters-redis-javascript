@@ -15,16 +15,25 @@ const parseInput = (str) => {
     for (let i = 0; i < newString.length; i++) {
         if (
             newString[i].toLowerCase() !== newString[i].toUpperCase() ||
-            arr[arr.length - 1] === "px"
+            arr[arr.length - 1] === "px" 
         ) {
             temp += newString[i];
-        } else {
+        }
+        else if (arr[arr.length - 1] === 'psync') {
+            console.log('HI ', arr, newString, newString[i]);
+            let a = newString[i + 1];
+            let b = newString[i + 4] + newString[i + 5];
+            arr.push(a);
+            arr.push(b);
+            i += 6;
+        }
+        else {
             if (temp !== "") arr.push(temp.toLowerCase());
             temp = "";
         }
     }
     if (temp !== "") arr.push(temp.toLowerCase());
-
+    
     return arr;
 }
 
