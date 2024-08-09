@@ -1,4 +1,4 @@
-const genResponse = (arr, isSlave, dict) => {
+const genResponse = (arr, isSlave, dict,connection) => {
     const master_replid = "8371b4fb1155b71f4a04d3e1bc3e18c4a990aeeb";
 
     function ping() {
@@ -38,7 +38,8 @@ const genResponse = (arr, isSlave, dict) => {
 
     function psync(id,offset) {
         if (id === '?') {
-            return `+FULLRESYNC ${master_replid} 0\r\n`
+            connection.write(`+FULLRESYNC ${master_replid} 0\r\n`);
+            connection.write("0\r\n");
         }
     }
 

@@ -42,7 +42,7 @@ const server = net.createServer((connection) => {
     connection.on("data", (data) => {
         const str = data.toString();
         const input = parseInput.parseInput(str);
-        const output = response.genResponse(input,argv.replicaof,dict);
+        const output = response.genResponse(input,argv.replicaof,dict,connection);
         console.log("input", input);
         console.log("output in master", output);
         connection.write(output); 
