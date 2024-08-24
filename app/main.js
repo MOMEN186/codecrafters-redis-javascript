@@ -8,7 +8,8 @@ var argv = require('optimist').argv;
 let port = argv.port||6379, masterPort, host;
 
 console.log("replicaof", argv.replicaof);
-if (argv.replicaof) {
+
+if (argv.replicaof) {// --port replicaof localhost 4444
     masterPort = Number(argv.replicaof.substr(10, argv.replicaof.length - 1));
     host = argv.replicaof.substr(0, 9);
     
@@ -31,21 +32,20 @@ if (argv.replicaof) {
     }));
 }
     
-
-
-
-
 const server = net.createServer((connection) => {
    
     let dict = new Map();
-    
     connection.on("data", (data) => {
         const str = data.toString();
         const input = parseInput.parseInput(str);
-        const output = response.genResponse(input,argv.replicaof,dict,connection);
+        let output= response.genResponse(input, argv.replicaof, dict);
+       
         console.log("input", input);
         console.log("output in master", output);
-        connection.write(output); 
+        for (let i = 0; i < output.length; i++){
+            connection.write(output[i]);
+        }
     });
 });
+
 server.listen(port);
