@@ -7,7 +7,6 @@ function formatmsg(msgs) {
 
     for (let i = 0; i < msgs.length; i++) {
         const msg = msgs[i];
-        console.log({msg})
         if (msg[0] === '+') {
          
             reply.push(msg);
@@ -31,16 +30,17 @@ function formatmsg(msgs) {
 
 }
 
-
 function sendMsg(msg,connection) {
- 
-    connection.write(formatmsg(msg));// format resp
+    console.log("in sendMsg",{msg});
+    connection.write(formatmsg(msg));
+}
 
+function BroadCast(msg, clients,connection) {
+    clients.forEach(client => {
+        if(connection!==client)
+        sendMsg(msg, client);
+    })
 }
 
 
-
-
-
-
-module.exports={sendMsg}
+module.exports={sendMsg,BroadCast}

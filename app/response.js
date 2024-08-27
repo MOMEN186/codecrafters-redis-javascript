@@ -1,7 +1,8 @@
 
-const { ping, echo, get, set, info, replconf,psync } = require("./commands");
-const { sendMsg } = require("./utils");
-const genResponse = (arr,connection) => {
+const { sendMsg,BroadCast } = require("./utils");
+
+const { ping, echo, get, set, info, replconf, psync } = require("./commands");
+const genResponse = (arr,connection,clients) => {
 
 
         switch (arr[0]) {
@@ -16,7 +17,8 @@ const genResponse = (arr,connection) => {
                 const key = arr[1], value = arr[2], px = arr[3];
 
                 sendMsg([set(key, value, px)], connection);
-                sendMsg(["set", key, value], connection);
+                 BroadCast(Buffer.from(["*", "set", key, value]), clients,connection);
+                // sendMsg(, connection);
                 break;
                 
             case "get":
