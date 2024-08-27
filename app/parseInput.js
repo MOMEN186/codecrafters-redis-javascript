@@ -33,6 +33,11 @@ const parseInput = (str) => {
         }
     }
     if (temp !== "") arr.push(temp.toLowerCase());
+    console.log("in input parser",{arr})
+    
+  
+    
+    console.log({ arr });
     
     return arr;
 }
