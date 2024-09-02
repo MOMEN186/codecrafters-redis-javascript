@@ -12,7 +12,7 @@ let {dict}= require("./hashMap");
     function set(key, value, px) {
         dict.set(key, value);
         console.log("get", dict.get(key));
-        console.log({ px });
+        console.log("------------------------------",{ px },"-----------------------------------");
         if (px) {
             setTimeout(() => {
                 dict.delete(key);
@@ -21,9 +21,9 @@ let {dict}= require("./hashMap");
          return["+OK"];
     }
 function get(key) {
-    console.log(key.toString());
+    console.log("key:",key.toString());
     
-    console.log(dict.has(key.toString()));
+    console.log("has",dict.has(key.toString()));
     return dict.has(key.toString()) ? [dict.get(key.toString())] : [];
 }
 function info() {

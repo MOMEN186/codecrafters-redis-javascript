@@ -1,6 +1,6 @@
 let { sendMsg } = require("./utils");
 const parseInput = require("./parseInput");
-
+let {genResponse}= require("./response");
 
 
 function replica(client,port) {
@@ -24,8 +24,27 @@ const commands = [
       
         if (parsedString[0] === "pong" || parsedString[0]==="ok") {
             sendMsg(commands[idx++], client);
-            console.log({ idx });
+         
         }
+
+        else {
+         
+            for (let i = 0; i < parsedString.length; i++){
+                if (parsedString[i] === "set") {
+                    {
+                   genResponse([parsedString[i],parsedString[++i],parsedString[++i]],client);
+               }}
+            }
+
+
+        }
+
+
+
+
+
+
+
     }));
 
 }

@@ -6,6 +6,7 @@ const { clients } = require("./clients");
 
 const genResponse = (arr,connection) => {
    
+    console.log("in gen response",{ arr });
    
         switch (arr[0]) {
             case "ping":
@@ -17,9 +18,9 @@ const genResponse = (arr,connection) => {
                 
             case "set":
                 const key = arr[1], value = arr[2], px = arr[4];
-                console.log({arr})
+                console.log("----------------------------------in set------------------------------------")
                 sendMsg(set(key, value, px), connection);
-                console.log("in response:", { arr });
+              
                 if (mainInfo.role == "master") {
                     clients.forEach(client => sendMsg(["*","SET",key,value],client));
                 }
@@ -37,7 +38,6 @@ const genResponse = (arr,connection) => {
                 }
                 break;
             case "replconf":
-                console.log("in replconf");
                 sendMsg(replconf(),connection);
                 break;
             case "psync":

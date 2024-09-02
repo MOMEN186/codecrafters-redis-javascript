@@ -3,7 +3,6 @@ const parseInput = (str) => {
     const pattern = "\r\n";
     let newString = "";
     let arr = [];
-    console.log({ str });
    
     for (let i = 0; i < str.length; i++){
         let x = str.substring(i, i + 2);
