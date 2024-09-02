@@ -33,7 +33,12 @@ const commands = [
                 if (parsedString[i] === "set") {
                     {
                    genResponse([parsedString[i],parsedString[++i],parsedString[++i]],client);
-               }}
+                    }
+                }
+                
+                else if (parsedString[i] === "getack") {
+                    genResponse([parsedString[i]], client);
+                }
             }
 
 

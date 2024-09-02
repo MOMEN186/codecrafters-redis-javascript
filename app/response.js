@@ -1,7 +1,7 @@
 
 const { sendMsg } = require("./utils");
 const { mainInfo } = require("./mainInfo");
-const { ping, echo, get, set, info, replconf, psync } = require("./commands");
+const { ping, echo, get, set, info, replconf, psync,getAck } = require("./commands");
 const { clients } = require("./clients");
 
 const genResponse = (arr,connection) => {
@@ -18,7 +18,6 @@ const genResponse = (arr,connection) => {
                 
             case "set":
                 const key = arr[1], value = arr[2], px = arr[4];
-                console.log("----------------------------------in set------------------------------------")
                 sendMsg(set(key, value, px), connection);
               
                 if (mainInfo.role == "master") {
@@ -38,7 +37,7 @@ const genResponse = (arr,connection) => {
                 }
                 break;
             case "replconf":
-                sendMsg(replconf(),connection);
+                    sendMsg(replconf(), connection);
                 break;
             case "psync":
                 sendMsg(psync(), connection);
@@ -50,6 +49,9 @@ const genResponse = (arr,connection) => {
                 clients.push(connection);
                 break;
         
+            case "getack":
+                sendMsg(getAck(), connection);
+                break;
 
 
     }

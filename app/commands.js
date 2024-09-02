@@ -11,8 +11,6 @@ let {dict}= require("./hashMap");
     }
     function set(key, value, px) {
         dict.set(key, value);
-        console.log("get", dict.get(key));
-        console.log("------------------------------",{ px },"-----------------------------------");
         if (px) {
             setTimeout(() => {
                 dict.delete(key);
@@ -39,4 +37,8 @@ const psync = () => {
     return [`+FULLRESYNC ${mainInfo.master_replid} 0`];
 }
 
-module.exports={ping,echo,set,get,info,replconf,psync}
+const getAck = () => {
+    return ["*","REPLCONF", "ACK", "0"];
+}
+
+module.exports={ping,echo,set,get,info,replconf,psync,getAck}
