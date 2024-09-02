@@ -4,11 +4,12 @@ function formatmsg(msgs) {
     if (msgs.length === 0) {
         return "$-1\r\n";
     }
-
+  console.log({msgs})
     for (let i = 0; i < msgs.length; i++) {
         const msg = msgs[i];
+      
         if (msg[0] === '+') {
-         
+        
             reply.push(msg);
         }
         else if (msg[0] === '*') {// array
@@ -16,7 +17,7 @@ function formatmsg(msgs) {
         }
         else if (msg[0] !== '$') {
             reply.push("$" + msg.length.toString());
-            reply.push(msg);   console.log({msg});
+            reply.push(msg);  
         }
         else {
             reply.push(msg);
@@ -25,22 +26,14 @@ function formatmsg(msgs) {
         }
       
     }
-   
     return reply.join('\r\n') + '\r\n';
 
 }
 
 function sendMsg(msg,connection) {
-    console.log("in sendMsg",{msg});
-    connection.write(formatmsg(msg));
-}
-
-function BroadCast(msg, clients,connection) {
-    clients.forEach(client => {
-        if(connection!==client)
-        sendMsg(msg, client);
-    })
+    const formattedMessage = formatmsg(msg);
+    connection.write(formattedMessage);
 }
 
 
-module.exports={sendMsg,BroadCast}
+module.exports={sendMsg}

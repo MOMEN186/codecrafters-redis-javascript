@@ -17,8 +17,9 @@ if (argv.replicaof) {
   mainInfo.role = "slave";
 
   const client = net.createConnection({ host, port: masterPort });
-
+    
   replica(client, port);
+    
 }
 
 // master server
