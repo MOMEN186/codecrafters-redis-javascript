@@ -1,9 +1,17 @@
 
+var offSet = require("./offSet");
+let idx = 0;
 const parseInput = (str) => {
     const pattern = "\r\n";
     let newString = "";
     let arr = [];
-   
+    let splitted = str.split("*");
+
+    console.log({ str });
+
+    for (let i = 0; i < splitted.length; i++) offSet.setBytes(splitted[i].length);
+
+
     for (let i = 0; i < str.length; i++){
         let x = str.substring(i, i + 2);
 
@@ -28,19 +36,6 @@ const parseInput = (str) => {
             newString = "";
         }
     }
-//    console.log({newString});
-//     let temp = "";
-//     for (let i = 0; i < newString.length; i++){
-//         if (newString[i] === "/") {
-//             arr.push(temp.toLowerCase());
-//             temp = "";
-//             continue;
-//         }
-//         temp += newString[i];
-//     }
-
-//     if (temp!=="/") arr.push(temp.toLowerCase());
-//     console.log({ arr, temp });
     return arr;
 
 }

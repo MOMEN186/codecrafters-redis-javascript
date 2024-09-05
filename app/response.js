@@ -4,16 +4,22 @@ const { mainInfo } = require("./mainInfo");
 const { ping, echo, get, set, info, replconf, psync,getAck } = require("./commands");
 const { clients } = require("./clients");
 
+
 const genResponse = (arr,connection) => {
    
-    console.log("in gen response",{ arr });
+   
    
         switch (arr[0]) {
             case "ping":
-                sendMsg(ping(), connection)
+                if (mainInfo.role === "master")
+                    sendMsg(ping(), connection)
+            
                 break;
             case "echo":
-                sendMsg(echo(arr[1]),connection);
+                if(mainInfo.role==="master")
+                    sendMsg(echo(arr[1]), connection);
+             
+
                 break;
                 
             case "set":
@@ -48,8 +54,10 @@ const genResponse = (arr,connection) => {
                 connection.write(Buffer.concat([rdbhead, rdb]));
                 clients.push(connection);
                 break;
-        
+            
+            
             case "getack":
+                console.log("in getack");
                 sendMsg(getAck(), connection);
                 break;
 

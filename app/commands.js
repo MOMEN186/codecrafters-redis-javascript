@@ -1,14 +1,15 @@
 const { mainInfo } = require("./mainInfo");
-let {dict}= require("./hashMap");
+let { dict } = require("./hashMap");
+let offSet = require("./offSet");
 
     function ping() {
-        console.log("in ping");
-          return[("+PONG")];
+          return["+PONG"];
     }
 
     function echo(word) {
          return[`+${word}`];
-    }
+}
+    
     function set(key, value, px) {
         dict.set(key, value);
         if (px) {
@@ -16,12 +17,9 @@ let {dict}= require("./hashMap");
                 dict.delete(key);
             }, parseInt(px));
         }
-         return["+OK"];
+         return["*","+OK"];
     }
 function get(key) {
-    console.log("key:",key.toString());
-    
-    console.log("has",dict.has(key.toString()));
     return dict.has(key.toString()) ? [dict.get(key.toString())] : [];
 }
 function info() {
@@ -31,14 +29,18 @@ function info() {
 }
 
     function replconf() {
-         return["+OK"];
+         return["*","+OK"];
 }
 const psync = () => {
     return [`+FULLRESYNC ${mainInfo.master_replid} 0`];
 }
 
 const getAck = () => {
-    return ["*","REPLCONF", "ACK", "0"];
+    
+    let bytes = offSet.getBytes() > 0 ? offSet.getBytes() + 1 : 0;
+    offSet.setModify(1);
+    offSet.setBytes(3);
+    return ["*","REPLCONF", "ACK", `${bytes}`];
 }
 
 module.exports={ping,echo,set,get,info,replconf,psync,getAck}

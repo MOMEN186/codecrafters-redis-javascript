@@ -1,3 +1,4 @@
+
 function formatmsg(msgs) {
     
     let reply = [];
@@ -12,7 +13,7 @@ function formatmsg(msgs) {
         
             reply.push(msg);
         }
-        else if (msg[0] === '*') {// array
+        else if (msg[0] === "*") {// array
             reply.push(`*${msgs.length-1}`)
         }
         else if (msg[0] !== '$') {
@@ -32,8 +33,10 @@ function formatmsg(msgs) {
 
 function sendMsg(msg,connection) {
     const formattedMessage = formatmsg(msg);
+    console.log({formattedMessage});
     connection.write(formattedMessage);
+ 
 }
 
 
-module.exports={sendMsg}
+module.exports = { sendMsg };
