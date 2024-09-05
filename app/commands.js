@@ -37,7 +37,7 @@ const psync = () => {
 
 const getAck = () => {
     
-    let bytes = offSet.getBytes() > 0 ? offSet.getBytes() + 1 : 0;
+    let bytes = offSet.getBytes();
     offSet.setModify(1);
     offSet.setBytes(3);
     return ["*","REPLCONF", "ACK", `${bytes}`];
