@@ -68,7 +68,7 @@ const genResponse = (arr, connection) => {
             break;
 
         case "wait":
-            sendMsg(wait(), connection);
+            sendMsg(wait(clients.length), connection);
             break;
     }
 };

@@ -1,7 +1,7 @@
 let { sendMsg } = require("./utils");
 const parseInput = require("./parseInput");
 let { genResponse } = require("./response");
-let { ping,getAck,set} = require("./commands");
+let {set} = require("./commands");
 function replica(client,port) {
     
     
@@ -44,12 +44,7 @@ const commands = [
                 else if (parsedString[i] === "getack") {
                     genResponse([parsedString[i]], client);
                 }
-                // else if (parsedString[i] === "ping" ||parsedString[i]==="echo") {
-                //     continue;
-                // }
-
-               
-      
+             
                
 
             }
