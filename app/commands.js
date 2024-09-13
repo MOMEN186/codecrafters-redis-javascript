@@ -1,26 +1,30 @@
 const { mainInfo } = require("./mainInfo");
-let { dict } = require("./hashMap");
+let  {dict}  = require("./hashMap");
 let offSet = require("./offSet");
 
     function ping() {
           return["+PONG"];
     }
 
-    function echo(word) {
-         return[`+${word}`];
+function echo(word) {
+    return [`+${word}`];
 }
     
     function set(key, value, px) {
+     
+        console.log("in set", key, value, px);
         dict.set(key, value);
+        console.log(dict.has(key));
         if (px) {
             setTimeout(() => {
                 dict.delete(key);
             }, parseInt(px));
         }
-         return["*","+OK"];
+         return["+OK"];
     }
 function get(key) {
-    return dict.has(key.toString()) ? [dict.get(key.toString())] : [];
+    console.log(`in get ${key} ${dict.has(key)}`);
+    return dict.has(key) ? [dict.get(key)] : [];
 }
 function info() {
        
@@ -29,7 +33,7 @@ function info() {
 }
 
     function replconf() {
-         return["*","+OK"];
+         return["+OK"];
 }
 const psync = () => {
     return [`+FULLRESYNC ${mainInfo.master_replid} 0`];
@@ -39,8 +43,8 @@ const getAck = () => {
     
     let bytes = offSet.getBytes();
     offSet.setModify(1);
-    offSet.setBytes(3);
-    return ["*","REPLCONF", "ACK", `${bytes}`];
+    console.log("in getack");
+    return ["*", "REPLCONF", "ACK", `${bytes}`];
 }
 
 module.exports={ping,echo,set,get,info,replconf,psync,getAck}

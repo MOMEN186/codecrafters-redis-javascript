@@ -24,15 +24,18 @@ const genResponse = (arr,connection) => {
                 
             case "set":
                 const key = arr[1], value = arr[2], px = arr[4];
-                sendMsg(set(key, value, px), connection);
-              
+                 sendMsg(set(key, value, px), connection);
+              console.log("in set");
                 if (mainInfo.role == "master") {
+                    console.log("in set master");
                     clients.forEach(client => sendMsg(["*","SET",key,value],client));
                 }
+                
                 break;
                 
             case "get":
-                sendMsg(get([arr[1]]), connection);
+                console.log("in get");
+                sendMsg(get(arr[1]), connection);
                 break;
                 
             case "info":

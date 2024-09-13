@@ -5,7 +5,6 @@ function formatmsg(msgs) {
     if (msgs.length === 0) {
         return "$-1\r\n";
     }
-  console.log({msgs})
     for (let i = 0; i < msgs.length; i++) {
         const msg = msgs[i];
       

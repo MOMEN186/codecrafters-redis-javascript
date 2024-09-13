@@ -26,21 +26,27 @@ const commands = [
         }
 
         else {
-         
-            for (let i = parsedString.length-1;i>=0; i--){
+            console.log({parsedString})
+            for (let i = 0;i<parsedString.length; i++){
                
                 if (parsedString[i] === "set") {
                     {
-                   genResponse([parsedString[i],parsedString[++i],parsedString[++i]],client);
+                        console.log("in set replica",parsedString[i],parsedString[i+1],parsedString[i+2]);
+                        set(parsedString[++i], parsedString[++i]);
+                    
                     }
+                }
+                else if (parsedString[i] === "get") {
+                    console.log("in get replica",parsedString[i],parsedString[i+1]);
+                genResponse([parsedString[i], parsedString[++i]],client);
                 }
                 
                 else if (parsedString[i] === "getack") {
                     genResponse([parsedString[i]], client);
                 }
-                else if (parsedString[i] === "ping" ||parsedString[i]==="echo") {
-                    continue;
-                }
+                // else if (parsedString[i] === "ping" ||parsedString[i]==="echo") {
+                //     continue;
+                // }
 
                
       
