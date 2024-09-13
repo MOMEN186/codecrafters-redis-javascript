@@ -5,15 +5,25 @@ function formatmsg(msgs) {
     if (msgs.length === 0) {
         return "$-1\r\n";
     }
+    console.log({msgs});
     for (let i = 0; i < msgs.length; i++) {
         const msg = msgs[i];
-      
+    
         if (msg[0] === '+') {
         
             reply.push(msg);
         }
         else if (msg[0] === "*") {// array
             reply.push(`*${msgs.length-1}`)
+        }
+        else if (msg[0] === ":") {
+            let conc="";
+            msgs.forEach(msg => {
+                conc+=msg;
+            })
+            reply.push(conc);
+            console.log({ reply });
+            break;
         }
         else if (msg[0] !== '$') {
             reply.push("$" + msg.length.toString());
