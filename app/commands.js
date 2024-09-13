@@ -47,4 +47,8 @@ const getAck = () => {
     return ["*", "REPLCONF", "ACK", `${bytes}`];
 }
 
-module.exports={ping,echo,set,get,info,replconf,psync,getAck}
+const wait = () => {
+    return ["0"];
+}
+
+module.exports={ping,echo,set,get,info,replconf,psync,getAck,wait}
